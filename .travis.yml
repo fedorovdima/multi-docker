@@ -9,14 +9,27 @@ script:
   - docker run -e CI=true fedorovdima/react-test npm test
 
 after_success:
-  - docker build -t fedorovdima/multi-client ./client
-  - docker build -t fedorovdima/multi-nginx ./nginx
-  - docker build -t fedorovdima/multi-server ./server
-  - docker build -t fedorovdima/multi-worker ./worker
+  - docker build -t ciklumdevops8953/multi-client ./client
+  - docker build -t ciklumdevops8953/multi-nginx ./nginx
+  - docker build -t ciklumdevops8953/multi-server ./server
+  - docker build -t ciklumdevops8953/multi-worker ./worker
   # Log in to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push fedorovdima/multi-client 
-  - docker push fedorovdima/multi-nginx
-  - docker push fedorovdima/multi-server
-  - docker push fedorovdima/multi-worker
+  - docker push ciklumdevops8953/multi-client 
+  - docker push ciklumdevops8953/multi-nginx
+  - docker push ciklumdevops8953/multi-server
+  - docker push ciklumdevops8953/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-eu-west-1-401237173725
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: 
+    secure: $AWS_SECRET_KEY
