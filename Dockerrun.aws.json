@@ -1,0 +1,38 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions":[
+    {
+      "name":"client",
+      "image":"ciklumdevops8953/multi-client",
+      "hostname": "client",
+      "essential":false
+    },
+    {
+      "name":"server",
+      "image":"ciklumdevops8953/multi-server",
+      "hostname": "api",
+      "essential":false
+    },
+    {
+      "name":"worker",
+      "image":"ciklumdevops8953/multi-worker",
+      "hostname":"worker",
+      "essential":false
+    },
+    {
+      "name":"nginx",
+      "image":"ciklumdevops8953/multi-nginx",
+      "essential":true,
+      "portMappings":[
+        {
+          "hostPort":80,
+          "containerPort":80
+        }
+      ],
+      "links":[
+        "client",
+        "server"
+      ]
+    }
+  ]
+}
